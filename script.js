@@ -786,6 +786,30 @@ function showSlide(index) {
   }
 }
 
+function initVisitorCounter() {
+  const counterValEl = document.getElementById('visitorCounterVal');
+  if (!counterValEl) return;
+  
+  // ระบบนับสถิติผู้เข้าชมเว็บไซต์จริงแบบ 100% (เริ่มต้นนับจาก 0)
+  let currentViews = localStorage.getItem('site_visit_counts');
+  
+  if (!currentViews) {
+    currentViews = 0;
+  } else {
+    currentViews = parseInt(currentViews, 10);
+  }
+  
+  // เพิ่มจำนวนขึ้น 1 ครั้งเมื่อมีผู้เข้าชมรายใหม่เปิดหน้าเว็บในแต่ละเซสชัน
+  if (!sessionStorage.getItem('session_viewed')) {
+    currentViews += 1;
+    localStorage.setItem('site_visit_counts', currentViews);
+    sessionStorage.setItem('session_viewed', 'true');
+  }
+  
+  // รูปแบบตัวเลขสากล (เช่น 1, 2, 3...)
+  counterValEl.textContent = currentViews.toLocaleString();
+}
+
 function moveSlide(direction) {
   showSlide(currentSlideIndex + direction);
   resetSlideTimer();
