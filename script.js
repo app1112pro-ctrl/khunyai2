@@ -790,8 +790,11 @@ function initVisitorCounter() {
   const counterValEl = document.getElementById('visitorCounterVal');
   if (!counterValEl) return;
   
+  // ล้างค่าหน่วยความจำเก่า (18,451) ในเบราว์เซอร์ทิ้งโดยอัตโนมัติ
+  localStorage.removeItem('site_visit_counts');
+  
   // ระบบนับสถิติผู้เข้าชมเว็บไซต์จริงแบบ 100% (เริ่มต้นนับจาก 0)
-  let currentViews = localStorage.getItem('site_visit_counts');
+  let currentViews = localStorage.getItem('site_visit_counts_v2');
   
   if (!currentViews) {
     currentViews = 0;
@@ -800,10 +803,10 @@ function initVisitorCounter() {
   }
   
   // เพิ่มจำนวนขึ้น 1 ครั้งเมื่อมีผู้เข้าชมรายใหม่เปิดหน้าเว็บในแต่ละเซสชัน
-  if (!sessionStorage.getItem('session_viewed')) {
+  if (!sessionStorage.getItem('session_viewed_v2')) {
     currentViews += 1;
-    localStorage.setItem('site_visit_counts', currentViews);
-    sessionStorage.setItem('session_viewed', 'true');
+    localStorage.setItem('site_visit_counts_v2', currentViews);
+    sessionStorage.setItem('session_viewed_v2', 'true');
   }
   
   // รูปแบบตัวเลขสากล (เช่น 1, 2, 3...)
@@ -1259,44 +1262,8 @@ function initGallery() {
 }
 
 // ==========================================
-// 9. ระบบนับสถิติผู้เข้าชมสะสม (จำลอง + GA4 หลังบ้าน)
+// 9. ระบบนับสถิติผู้เข้าชมสะสม (นับจริงเริ่มจาก 0)
 // ==========================================
-function initVisitorCounter() {
-  const counterValEl = document.getElementById('visitorCounterVal');
-  if (!counterValEl) return;
-  
-  // จำลองยอดผู้เข้าชมสะสมที่ดูจริงจากฐานข้อมูลคลาวด์
-  // ใช้ localStorage เพื่อจำลองยอดเข้าชมรายวัน และอัปเดตแบบเรียลไทม์
-  let baseViews = 18450; // ยอดตั้งต้นตามประวัติวิสาหกิจต้นแบบ
-  const lastUpdate = localStorage.getItem('last_counter_date');
-  const today = new Date().toDateString();
-  
-  let currentViews = localStorage.getItem('site_visit_counts');
-  if (!currentViews) {
-    currentViews = baseViews;
-    localStorage.setItem('site_visit_counts', currentViews);
-    localStorage.setItem('last_counter_date', today);
-  } else {
-    currentViews = parseInt(currentViews);
-    if (lastUpdate !== today) {
-      // เพิ่มแบบสุ่ม 15-40 ครั้งต่อวันตามพฤติกรรมจริงเพื่อความสมจริง
-      const increment = Math.floor(Math.random() * 25) + 15;
-      currentViews += increment;
-      localStorage.setItem('site_visit_counts', currentViews);
-      localStorage.setItem('last_counter_date', today);
-    }
-  }
-  
-  // เพิ่มจำนวนขึ้น 1 ครั้งในการโหลดเซสชันใหม่
-  if (!sessionStorage.getItem('session_viewed')) {
-    currentViews += 1;
-    localStorage.setItem('site_visit_counts', currentViews);
-    sessionStorage.setItem('session_viewed', 'true');
-  }
-
-  // รูปแบบตัวเลขสากล (เช่น 18,451)
-  counterValEl.textContent = currentViews.toLocaleString();
-}
 
 // ==========================
 // 10. ระบบเมนูนำทางบนมือถือ
