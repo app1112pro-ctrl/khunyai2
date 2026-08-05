@@ -67,14 +67,14 @@ const translations = {
     queue_col_group: "คณะศึกษาดูงาน / กิจกรรม",
     queue_col_qty: "จำนวนคน",
     queue_col_status: "สถานะ",
-    queue_status_open: "ว่างรับจอง",
-    queue_status_full: "คิวเต็ม",
+    queue_status_open: "ว่าง",
+    queue_status_full: "เต็ม",
     queue_status_holiday: "งดให้บริการ",
     queue_empty_message: "ไม่มีคิวการศึกษาดูงานในขณะนี้",
     queue_summary_title: "📊 สรุปสถานะรายวันประจำเดือน",
-    queue_summary_open: "วันว่างรับจอง",
-    queue_summary_full: "วันที่คิวเต็ม",
-    queue_summary_holiday: "งดให้บริการ",
+    queue_summary_open: "วันว่าง",
+    queue_summary_full: "วันคิวเต็ม",
+    queue_summary_holiday: "วันงดให้บริการ",
     
     // Stations Section
     stations_eyebrow: "ฐานกิจกรรมเรียนรู้",
@@ -969,20 +969,19 @@ function renderQueueTable(rows) {
   }
   
   validDataRows.forEach((row) => {
+    const date = row[0] || "";
+    const time = row[1] || "-";
+    const groupName = row[2] || "-";
+    const qty = row[3] || "-";
     
-    const date = row[0];
-    const time = row[1];
-    const groupName = row[2];
-    const qty = row[3];
-    const statusText = row[4] ? row[4].trim() : "ว่าง";
-    
+    const rowStr = row.join(" ").toLowerCase();
     let statusClass = "open";
     let statusTranslateKey = "queue_status_open";
     
-    if (statusText.includes("เต็ม") || statusText.toLowerCase() === "full") {
+    if (rowStr.includes("เต็ม") || rowStr.includes("จองแล้ว") || rowStr.includes("ไม่ว่าง") || rowStr.includes("full") || rowStr.includes("booked")) {
       statusClass = "full";
       statusTranslateKey = "queue_status_full";
-    } else if (statusText.includes("หยุด") || statusText.includes("งด") || statusText.toLowerCase() === "holiday") {
+    } else if (rowStr.includes("หยุด") || rowStr.includes("งด") || rowStr.includes("ปิด") || rowStr.includes("holiday") || rowStr.includes("off")) {
       statusClass = "holiday";
       statusTranslateKey = "queue_status_holiday";
     }
@@ -1052,11 +1051,12 @@ function renderCalendarFromQueue(queueRows) {
     
     const dayNum = parseInt(numMatch[1], 10);
     if (dayNum >= 1 && dayNum <= 31) {
-      const statText = row[4] ? row[4].trim() : "ว่าง";
+      const rowStr = row.join(" ").toLowerCase();
       let status = "open";
-      if (statText.includes("เต็ม") || statText.toLowerCase() === "full") {
+      
+      if (rowStr.includes("เต็ม") || rowStr.includes("จองแล้ว") || rowStr.includes("ไม่ว่าง") || rowStr.includes("full") || rowStr.includes("booked")) {
         status = "full";
-      } else if (statText.includes("หยุด") || statText.includes("งด") || statText.toLowerCase() === "holiday") {
+      } else if (rowStr.includes("หยุด") || rowStr.includes("งด") || rowStr.includes("ปิด") || rowStr.includes("holiday") || rowStr.includes("off")) {
         status = "holiday";
       }
       
