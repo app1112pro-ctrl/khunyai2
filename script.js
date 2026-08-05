@@ -937,6 +937,58 @@ const mockQueueData = [
   ["31 ส.ค. 2569", "ครึ่งวันเช้า (09:00 - 12:00)", "ว่าง - ติดต่อจองศึกษาดูงานได้", "-", "ว่าง"]
 ];
 
+// Helper สำหรับการสกัดเอาเฉพาะหมายเลขวันที่ (1-31) จากข้อความวันที่ทุกรูปแบบ
+function parseDayNumber(dateStr) {
+  if (!dateStr) return null;
+  const str = dateStr.trim();
+  
+  // 1. ถ้าขึ้นต้นด้วยปี YYYY-MM-DD หรือ YYYY/MM/DD (เช่น 2026-08-05 หรือ 2569-08-05)
+  const isoMatch = str.match(/^\d{4}[\-\/]\d{1,2}[\-\/](\d{1,2})/);
+  if (isoMatch) {
+    return parseInt(isoMatch[1], 10);
+  }
+  
+  // 2. ถ้าขึ้นต้นด้วยวัน DD (เช่น "05/08/2026", "5 ส.ค. 2569", "05-08-2026", "5 สิงหาคม")
+  const dayFirstMatch = str.match(/^(\d{1,2})[\s\/\-\.\,\_]/);
+  if (dayFirstMatch) {
+    return parseInt(dayFirstMatch[1], 10);
+  }
+  
+  // 3. ถ้าเป็นตัวเลขโดดๆ (1-31)
+  if (/^\d{1,2}$/.test(str)) {
+    return parseInt(str, 10);
+  }
+  
+  // 4. ค้นหาตัวเลข 1-2 หลักที่อยู่ข้างหน้าเดือน
+  const fallbackMatch = str.match(/(\d{1,2})\s*(?:ส\.ค\.|สิงหาคม|ก\.ค\.|ก\.ย\.|ต\.ค\.|พ\.ย\.|ธ\.ค\.|ม\.ค\.|ก\.พ\.|มี\.ค\.|เม\.ย\.|พ\.ค\.|มิ\.ย\.)/);
+  if (fallbackMatch) {
+    return parseInt(fallbackMatch[1], 10);
+  }
+  
+  return null;
+}
+
+// Helper สำหรับจำแนกสถานะจากบรรทัดข้อมูล (ว่าง, เต็ม, งดให้บริการ)
+function parseRowStatus(row) {
+  if (!row || !Array.isArray(row)) return "open";
+  
+  // อ่านจากคอลัมน์สถานะตรงๆ ก่อน (คอลัมน์ E หรือ Index 4)
+  const col4 = (row[4] || "").trim().toLowerCase();
+  if (col4.includes("เต็ม") || col4.includes("จอง") || col4 === "full" || col4 === "booked") return "full";
+  if (col4.includes("หยุด") || col4.includes("งด") || col4.includes("ปิด") || col4 === "holiday" || col4 === "off") return "holiday";
+  if (col4.includes("ว่าง") || col4 === "open") return "open";
+  
+  // หากไม่พบ ให้สแกนข้อความทั้งบรรทัด
+  const rowStr = row.join(" ").toLowerCase();
+  if (rowStr.includes("เต็ม") || rowStr.includes("จองแล้ว") || rowStr.includes("ไม่ว่าง") || rowStr.includes("full") || rowStr.includes("booked")) {
+    return "full";
+  }
+  if (rowStr.includes("หยุด") || rowStr.includes("งด") || rowStr.includes("ปิด") || rowStr.includes("holiday") || rowStr.includes("off")) {
+    return "holiday";
+  }
+  return "open";
+}
+
 function renderQueueTable(rows) {
   const tableBody = document.querySelector('#queueTable tbody');
   if (!tableBody) return;
@@ -946,7 +998,7 @@ function renderQueueTable(rows) {
   // กรองหาแถวข้อมูลจริง
   const validDataRows = rows.filter((row, index) => {
     if (index === 0 && (row[0] === 'วันที่' || row[0] === 'Date')) return false;
-    return row.length >= 4 && row[0];
+    return row && row.length >= 1 && (row[0] || "").trim() !== "";
   });
   
   const currentLang = localStorage.getItem('preferred_language') || 'th';
@@ -960,7 +1012,6 @@ function renderQueueTable(rows) {
     `;
     tableBody.appendChild(tr);
     
-    // บันทึกเวลาที่ดึงข้อมูลล่าสุดและแสดงผล
     fetchedTime = new Date();
     updateLastUpdateTimeDisplay(currentLang);
     setLanguage(currentLang);
@@ -974,17 +1025,9 @@ function renderQueueTable(rows) {
     const groupName = row[2] || "-";
     const qty = row[3] || "-";
     
-    const rowStr = row.join(" ").toLowerCase();
-    let statusClass = "open";
-    let statusTranslateKey = "queue_status_open";
-    
-    if (rowStr.includes("เต็ม") || rowStr.includes("จองแล้ว") || rowStr.includes("ไม่ว่าง") || rowStr.includes("full") || rowStr.includes("booked")) {
-      statusClass = "full";
-      statusTranslateKey = "queue_status_full";
-    } else if (rowStr.includes("หยุด") || rowStr.includes("งด") || rowStr.includes("ปิด") || rowStr.includes("holiday") || rowStr.includes("off")) {
-      statusClass = "holiday";
-      statusTranslateKey = "queue_status_holiday";
-    }
+    const statusType = parseRowStatus(row);
+    let statusClass = statusType;
+    let statusTranslateKey = "queue_status_" + statusType;
     
     const tr = document.createElement('tr');
     tr.innerHTML = `
@@ -997,14 +1040,11 @@ function renderQueueTable(rows) {
     tableBody.appendChild(tr);
   });
   
-  // แปลตารางหลังแสดงผลเสร็จ
   setLanguage(currentLang);
   
-  // บันทึกเวลาที่ดึงข้อมูลล่าสุดและแสดงผล
   fetchedTime = new Date();
   updateLastUpdateTimeDisplay(currentLang);
   
-  // วาดปฏิทินรายเดือนให้ตรงตามตารางข้อมูล
   renderCalendarFromQueue(rows);
 }
 
@@ -1015,54 +1055,48 @@ function renderCalendarFromQueue(queueRows) {
   
   calGrid.innerHTML = '';
   
-  // 1. กรองเฉพาะแถวข้อมูลจริง (เหมือน renderQueueTable)
+  // 1. กรองเฉพาะแถวข้อมูลจริง
   const validRows = queueRows.filter((row, index) => {
     if (index === 0 && (row[0] === 'วันที่' || row[0] === 'Date')) return false;
     return row && row.length >= 1 && (row[0] || "").trim() !== "";
   });
   
-  // 2. ดึงปีและเดือนจากข้อมูลเพื่อคำนวณวันแรกของเดือนและจำนวนวันแบบอัตโนมัติ
+  // 2. ดึงปีและเดือนจากข้อมูลแบบ Auto-Detect
   let targetYear = 2026;
   let targetMonth = 7; // สิงหาคม (0-indexed)
   
   for (const row of validRows) {
     const rawDate = (row[0] || "").trim();
-    if (rawDate.includes("2567") || rawDate.includes("2024")) targetYear = 2024;
-    else if (rawDate.includes("2568") || rawDate.includes("2025")) targetYear = 2025;
-    else if (rawDate.includes("2569") || rawDate.includes("2026")) targetYear = 2026;
     
-    if (rawDate.includes("ก.ค.") || rawDate.includes("กรกฎาคม") || rawDate.includes("/07/")) targetMonth = 6;
-    else if (rawDate.includes("ส.ค.") || rawDate.includes("สิงหาคม") || rawDate.includes("/08/")) targetMonth = 7;
-    else if (rawDate.includes("ก.ย.") || rawDate.includes("กันยายน") || rawDate.includes("/09/")) targetMonth = 8;
+    const yearMatch = rawDate.match(/(20\d{2}|25\d{2})/);
+    if (yearMatch) {
+      const y = parseInt(yearMatch[1], 10);
+      targetYear = y > 2400 ? y - 543 : y; // แปลง พ.ศ. เป็น ค.ศ.
+    }
+    
+    if (rawDate.includes("ก.ค.") || rawDate.includes("กรกฎาคม") || rawDate.includes("/07/") || rawDate.includes("-07-")) targetMonth = 6;
+    else if (rawDate.includes("ส.ค.") || rawDate.includes("สิงหาคม") || rawDate.includes("/08/") || rawDate.includes("-08-")) targetMonth = 7;
+    else if (rawDate.includes("ก.ย.") || rawDate.includes("กันยายน") || rawDate.includes("/09/") || rawDate.includes("-09-")) targetMonth = 8;
   }
   
   // คำนวณวันแรกของเดือน (0 = อาทิตย์ ... 6 = เสาร์) และจำนวนวันทั้งหมด
   const startDayOffset = new Date(targetYear, targetMonth, 1).getDay();
   const totalDays = new Date(targetYear, targetMonth + 1, 0).getDate();
   
-  // 3. สร้าง Day Map เพื่อผูกสถานะจากตารางข้อมูลจริงโดยตรง
+  // 3. สร้าง Day Map สกัดวันที่ (1-31) ผูกเข้ากับสถานะตรงกัน 100%
   const dayStatusMap = {};
   
   validRows.forEach(row => {
-    const dateStr = (row[0] || "").trim();
-    // สกัดเอาตัวเลขวันที่ (1-31) จากข้อความทุกรูปแบบ
-    const numMatch = dateStr.match(/^(\d{1,2})\b/) || dateStr.match(/(\d{1,2})\s*(?:ส\.ค\.|สิงหาคม|\/|-)/) || dateStr.match(/\b(\d{1,2})\b/);
-    if (!numMatch) return;
-    
-    const dayNum = parseInt(numMatch[1], 10);
-    if (dayNum >= 1 && dayNum <= 31) {
-      const rowStr = row.join(" ").toLowerCase();
-      let status = "open";
+    const dayNum = parseDayNumber(row[0] || "");
+    if (dayNum && dayNum >= 1 && dayNum <= 31) {
+      const status = parseRowStatus(row);
       
-      if (rowStr.includes("เต็ม") || rowStr.includes("จองแล้ว") || rowStr.includes("ไม่ว่าง") || rowStr.includes("full") || rowStr.includes("booked")) {
-        status = "full";
-      } else if (rowStr.includes("หยุด") || rowStr.includes("งด") || rowStr.includes("ปิด") || rowStr.includes("holiday") || rowStr.includes("off")) {
-        status = "holiday";
-      }
-      
-      // หากวันนั้นมีสถานะเต็มหรือหยุด ให้คงสิทธิ์ไว้ระดับสูงสุด
-      if (!dayStatusMap[dayNum] || status === "full" || status === "holiday") {
+      if (!dayStatusMap[dayNum]) {
         dayStatusMap[dayNum] = status;
+      } else if (status === "full") {
+        dayStatusMap[dayNum] = "full";
+      } else if (status === "holiday" && dayStatusMap[dayNum] !== "full") {
+        dayStatusMap[dayNum] = "holiday";
       }
     }
   });
@@ -1101,7 +1135,6 @@ function renderCalendarFromQueue(queueRows) {
     div.className = 'cal-cell';
     div.textContent = day;
     
-    // ดึงสถานะที่ตรงกับตารางข้อมูลรายการ 100%
     const dayStatus = dayStatusMap[day] || "open";
     
     if (dayStatus === "open") {
