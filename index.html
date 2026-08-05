@@ -19,6 +19,15 @@
   <!-- Favicon -->
   <link rel="icon" href="assets/logo-icon.png" type="image/png">
   
+  <!-- Google Analytics 4 (GA4) Tracking & Measurement -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2ZFVSF5CFQ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-2ZFVSF5CFQ', { 'send_page_view': true });
+  </script>
+  
   <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -72,7 +81,7 @@
           <li><a href="#homeTab" class="active" data-tab-nav="homeTab" data-i18n="nav_home">หน้าแรก</a></li>
           <li><a href="stations.html" data-i18n="nav_stations">ฐานเรียนรู้</a></li>
           <li><a href="#packagesTab" data-tab-nav="packagesTab" data-i18n="nav_packages">หลักสูตร & แพ็กเกจ</a></li>
-          <li><a href="#foodTab" data-tab-nav="foodTab" data-i18n="nav_food">เมนูอาหารสุขภาพ</a></li>
+          <li><a href="food.html" data-i18n="nav_food">เมนูอาหาร</a></li>
           <li><a href="coordinator.html" data-i18n="nav_coordinator">สำหรับผู้จัดโครงการ</a></li>
           <li><a href="#aboutTab" data-tab-nav="aboutTab" data-i18n="nav_about">เกี่ยวกับเรา</a></li>
           <li><a href="#contactTab" data-tab-nav="contactTab" data-i18n="nav_contact">ติดต่อเรา</a></li>
@@ -238,7 +247,7 @@
               <span class="price-lbl" data-i18n="pkg_price_label">อัตราเริ่มต้น</span>
               <div class="price-val">350 - 450 <span class="price-lbl" data-i18n="pkg_price_unit">บาท/ท่าน</span></div>
             </div>
-            <a href="https://lin.ee/rGebh2c" target="_blank" class="btn btn-outline" data-i18n="pkg_btn_select">จองและขอใบเสนอราคา</a>
+            <a href="https://lin.ee/rGebh2c?utm_source=website&utm_medium=button&utm_campaign=package_booking" target="_blank" class="btn btn-outline" onclick="trackLineClick('package_small')" data-i18n="pkg_btn_select">จองและขอใบเสนอราคา</a>
           </div>
 
           <!-- Package 2: Medium Group -->
@@ -256,7 +265,7 @@
               <span class="price-lbl" data-i18n="pkg_price_label">อัตราเริ่มต้น</span>
               <div class="price-val">300 - 350 <span class="price-lbl" data-i18n="pkg_price_unit">บาท/ท่าน</span></div>
             </div>
-            <a href="https://lin.ee/rGebh2c" target="_blank" class="btn btn-primary" data-i18n="pkg_btn_select">จองและขอใบเสนอราคา</a>
+            <a href="https://lin.ee/rGebh2c?utm_source=website&utm_medium=button&utm_campaign=package_booking" target="_blank" class="btn btn-primary" onclick="trackLineClick('package_medium')" data-i18n="pkg_btn_select">จองและขอใบเสนอราคา</a>
           </div>
 
           <!-- Package 3: Large Group -->
@@ -274,7 +283,7 @@
               <span class="price-lbl" data-i18n="pkg_price_label">อัตราเริ่มต้น</span>
               <div class="price-val">250 - 280 <span class="price-lbl" data-i18n="pkg_price_unit">บาท/ท่าน</span></div>
             </div>
-            <a href="https://lin.ee/rGebh2c" target="_blank" class="btn btn-outline" data-i18n="pkg_btn_select">จองและขอใบเสนอราคา</a>
+            <a href="https://lin.ee/rGebh2c?utm_source=website&utm_medium=button&utm_campaign=package_booking" target="_blank" class="btn btn-outline" onclick="trackLineClick('package_large')" data-i18n="pkg_btn_select">จองและขอใบเสนอราคา</a>
           </div>
         </div>
       </section>
@@ -466,6 +475,7 @@
           <button class="food-tab-btn" data-filter="buffet" data-i18n="food_tab_buffet">บุฟเฟต์สำหรับคณะ</button>
           <button class="food-tab-btn" data-filter="alacarte" data-i18n="food_tab_alacarte">เซ็ตอาหารพิเศษ</button>
           <button class="food-tab-btn" data-filter="dessert" data-i18n="food_tab_dessert">ของหวานและเครื่องดื่ม</button>
+          <button class="food-tab-btn" data-filter="product" data-i18n="food_tab_products">🛍️ รายการสินค้าแปรรูป</button>
         </div>
 
         <div class="food-grid">
@@ -538,6 +548,84 @@
               <span class="cat" data-i18n="food_tab_dessert">ของหวานและเครื่องดื่ม</span>
               <h4>ขนมแปรรูป (ทุเรียนหนึบ, ชีสมังคุด & พริกไทยหวาน)</h4>
               <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;">ท๊อฟฟี่กระวาน, ทุเรียนเบญจรส, น้ำมะปี๊ดน้ำผึ้ง & ชามังคุด</p>
+              <p data-i18n="food_price_ask">สอบถามรายละเอียดราคาทาง LINE</p>
+            </div>
+          </div>
+
+          <!-- Product 1: P_1 -->
+          <div class="food-card" data-category="product">
+            <div class="food-img-wrap">
+              <img src="assets/products/P_1.jpg" onerror="if(!this.triedPng){this.triedPng=true;this.src='assets/products/P_1.png';}else{this.src='assets/buffet-set1.jpg';}" alt="น้ำพริกกุ้งเสียบทุเรียนทอด คุณยาย² (P_1)">
+            </div>
+            <div class="food-info">
+              <span class="cat" data-i18n="food_tab_products">รายการสินค้าแปรรูป</span>
+              <h4>น้ำพริกกุ้งเสียบทุเรียนทอด (P_1)</h4>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;">สินค้ายอดนิยมประจำกลุ่ม กรอบ อร่อย ได้มาตรฐาน อย. 5 ดาว</p>
+              <p data-i18n="food_price_ask">สอบถามรายละเอียดราคาทาง LINE</p>
+            </div>
+          </div>
+
+          <!-- Product 2: P_2 -->
+          <div class="food-card" data-category="product">
+            <div class="food-img-wrap">
+              <img src="assets/products/P_2.jpg" onerror="if(!this.triedPng){this.triedPng=true;this.src='assets/products/P_2.png';}else{this.src='assets/buffet-set2.jpg';}" alt="ทุเรียนหนึบคุณยาย² (P_2)">
+            </div>
+            <div class="food-info">
+              <span class="cat" data-i18n="food_tab_products">รายการสินค้าแปรรูป</span>
+              <h4>ทุเรียนหนึบสูตรคุณยายกำลังสอง (P_2)</h4>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;">ทุเรียนแปรรูปนวัตกรรม หวานกลมกล่อม เคี้ยวหนึบเต็มคำ</p>
+              <p data-i18n="food_price_ask">สอบถามรายละเอียดราคาทาง LINE</p>
+            </div>
+          </div>
+
+          <!-- Product 3: P_3 -->
+          <div class="food-card" data-category="product">
+            <div class="food-img-wrap">
+              <img src="assets/products/P_3.jpg" onerror="if(!this.triedPng){this.triedPng=true;this.src='assets/products/P_3.png';}else{this.src='assets/buffet-set3.jpg';}" alt="พริกไทยหวานลดน้ำหนัก (P_3)">
+            </div>
+            <div class="food-info">
+              <span class="cat" data-i18n="food_tab_products">รายการสินค้าแปรรูป</span>
+              <h4>พริกไทยหวานลดน้ำหนัก (P_3)</h4>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;">พริกไทยอ่อนแช่อิ่มอบแห้ง นวัตกรรมสมุนไพรพื้นบ้านจันท์</p>
+              <p data-i18n="food_price_ask">สอบถามรายละเอียดราคาทาง LINE</p>
+            </div>
+          </div>
+
+          <!-- Product 4: P_4 -->
+          <div class="food-card" data-category="product">
+            <div class="food-img-wrap">
+              <img src="assets/products/P_4.jpg" onerror="if(!this.triedPng){this.triedPng=true;this.src='assets/products/P_4.png';}else{this.src='assets/alacarte-1.jpg';}" alt="ซอสมังคุดปรุงรส (P_4)">
+            </div>
+            <div class="food-info">
+              <span class="cat" data-i18n="food_tab_products">รายการสินค้าแปรรูป</span>
+              <h4>ซอสมังคุดปรุงรสสูตรเข้มข้น (P_4)</h4>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;">ซอสผลไม้แปรรูปสำหรับผัดไทและปรุงอาหารเพื่อสุขภาพ</p>
+              <p data-i18n="food_price_ask">สอบถามรายละเอียดราคาทาง LINE</p>
+            </div>
+          </div>
+
+          <!-- Product 5: P_5 -->
+          <div class="food-card" data-category="product">
+            <div class="food-img-wrap">
+              <img src="assets/products/P_5.jpg" onerror="if(!this.triedPng){this.triedPng=true;this.src='assets/products/P_5.png';}else{this.src='assets/alacarte-2.jpg';}" alt="ท๊อฟฟี่กระวานสมุนไพร (P_5)">
+            </div>
+            <div class="food-info">
+              <span class="cat" data-i18n="food_tab_products">รายการสินค้าแปรรูป</span>
+              <h4>ท๊อฟฟี่กระวานสมุนไพรไทย (P_5)</h4>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;">อมเพลิน หอมกลิ่นกระวานแท้เมืองจันท์ ช่วยชูรสและสดชื่น</p>
+              <p data-i18n="food_price_ask">สอบถามรายละเอียดราคาทาง LINE</p>
+            </div>
+          </div>
+
+          <!-- Product 6: P_6 -->
+          <div class="food-card" data-category="product">
+            <div class="food-img-wrap">
+              <img src="assets/products/P_6.jpg" onerror="if(!this.triedPng){this.triedPng=true;this.src='assets/products/P_6.png';}else{this.src='assets/dessert.jpg';}" alt="น้ำมะปี๊ดผึ้งสด (P_6)">
+            </div>
+            <div class="food-info">
+              <span class="cat" data-i18n="food_tab_products">รายการสินค้าแปรรูป</span>
+              <h4>น้ำมะปี๊ดอบน้ำผึ้งแท้เมืองจันท์ (P_6)</h4>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;">วิตามินซีสูง ชุ่มคอ สดชื่น ผลิตภัณฑ์ OTOP 5 ดาว</p>
               <p data-i18n="food_price_ask">สอบถามรายละเอียดราคาทาง LINE</p>
             </div>
           </div>
@@ -666,10 +754,20 @@
             </div>
             
             <div class="contact-detail">
+              <div class="icon">💬</div>
+              <div>
+                <h4 data-i18n="contact_line_lbl">ช่องทางติดต่อหลัก (LINE Official Account)</h4>
+                <a href="https://lin.ee/rGebh2c?utm_source=website&utm_medium=button&utm_campaign=contact_line_oa" target="_blank" class="btn btn-primary" onclick="trackLineClick('contact_line_oa')" style="background-color: #06C755; border-color: #06C755; font-size: 0.85rem; padding: 6px 16px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px; margin-top: 4px;">
+                  💬 ติดต่อผ่าน LINE OA (@khunyai2)
+                </a>
+              </div>
+            </div>
+            
+            <div class="contact-detail">
               <div class="icon">📞</div>
               <div>
                 <h4 data-i18n="contact_phone_lbl">เบอร์โทรศัพท์ติดต่อตรง</h4>
-                <p data-i18n="contact_phone_val">08-1863-2637 (ประธานวัลลี ใจเย็น / คุณนิด)</p>
+                <p data-i18n="contact_phone_val">081-136-3325 (คุณพชร ใจเย็น) / 081-863-2637 (คุณแม่วัลลี)</p>
               </div>
             </div>
             
@@ -677,7 +775,7 @@
               <div class="icon">✉️</div>
               <div>
                 <h4 data-i18n="contact_email_lbl">อีเมลสำหรับส่งจดหมายราชการ</h4>
-                <p data-i18n="contact_email_val">bebennnn@gmail.com</p>
+                <p data-i18n="contact_email_val">Khlongnamkhem532@gmail.com</p>
               </div>
             </div>
           </div>
@@ -690,7 +788,7 @@
               <p data-i18n="contact_qr_lbl">สแกน QR Code เพื่อแชทบน LINE</p>
               <p class="desc" style="font-size: 0.75rem; color: var(--text-muted);" data-i18n="contact_qr_sub">แอดไลน์ประสานงานด่วน</p>
             </div>
-            <a href="https://lin.ee/rGebh2c" target="_blank" class="btn btn-primary" style="width: 100%; margin-top: 10px;" data-i18n="nav_cta">สอบถาม/จองศึกษาดูงานผ่าน LINE</a>
+            <a href="https://lin.ee/rGebh2c?utm_source=website&utm_medium=button&utm_campaign=contact_qr" target="_blank" class="btn btn-primary" style="width: 100%; margin-top: 10px;" onclick="trackLineClick('contact_qr')" data-i18n="nav_cta">สอบถาม/จองศึกษาดูงานผ่าน LINE</a>
           </div>
         </div>
       </section>
@@ -701,7 +799,7 @@
   <!-- FOOTER -->
   <footer>
     <div class="wrap">
-      <p data-i18n="footer_text">© วิสาหกิจชุมชนกลุ่มคลองน้ำเค็มทันใจ จ.จันทบุรี — พัฒนาสำหรับระบบ B2G และผู้จัดโครงการศึกษาดูงาน</p>
+      <p data-i18n="footer_text">© วิสาหกิจชุมชนกลุ่มคลองน้ำเค็มทันใจ จ.จันทบุรี</p>
       <div class="footer-counter">
         <span data-i18n="footer_visit_count">ผู้เข้าชมสะสมในระบบ:</span> <strong id="visitorCounterVal">0</strong>
       </div>
@@ -709,7 +807,7 @@
   </footer>
 
   <!-- FLOATING LINE BUTTON -->
-  <a href="https://lin.ee/rGebh2c" target="_blank" class="float-line-btn">
+  <a href="https://lin.ee/rGebh2c?utm_source=website&utm_medium=button&utm_campaign=floating_line" target="_blank" class="float-line-btn" onclick="trackLineClick('floating_line')">
     <span>💬</span> <span data-i18n="nav_cta">สอบถามผ่าน LINE</span>
   </a>
 

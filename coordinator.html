@@ -9,6 +9,15 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="assets/logo-icon.png">
   
+  <!-- Google Analytics 4 (GA4) Tracking & Measurement -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2ZFVSF5CFQ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-2ZFVSF5CFQ', { 'send_page_view': true });
+  </script>
+  
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,7 +44,7 @@
           <li><a href="index.html#homeTab" data-i18n="nav_home">หน้าแรก</a></li>
           <li><a href="stations.html" data-i18n="nav_stations">ฐานเรียนรู้</a></li>
           <li><a href="index.html#packagesTab" data-i18n="nav_packages">หลักสูตร & แพ็กเกจ</a></li>
-          <li><a href="index.html#foodTab" data-i18n="nav_food">เมนูอาหารสุขภาพ</a></li>
+          <li><a href="food.html" data-i18n="nav_food">เมนูอาหาร</a></li>
           <li><a href="coordinator.html" class="active" data-i18n="nav_coordinator">สำหรับผู้จัดโครงการ</a></li>
           <li><a href="index.html#aboutTab" data-i18n="nav_about">เกี่ยวกับเรา</a></li>
           <li><a href="index.html#contactTab" data-i18n="nav_contact">ติดต่อเรา</a></li>
@@ -87,26 +96,54 @@
       <div class="co-section">
         <h3 data-i18n="co_sec1_title">📁 ดาวน์โหลดเอกสาร (Project Templates)</h3>
         <div class="download-list">
+          <!-- Item 1: Project Template (Word) -->
           <div class="download-item">
             <div class="download-info">
-              <h4 data-i18n="co_d1_title">ร่างโครงการศึกษาดูงานผู้สูงอายุ (ไฟล์ Word)</h4>
-              <p data-i18n="co_d1_desc">ตัวอย่างวัตถุประสงค์ ผลที่คาดว่าจะได้รับ และกำหนดการนำไปปรับใช้ได้ทันที</p>
+              <h4 data-i18n="co_d1_title">📝 1. ร่างโครงการศึกษาดูงานผู้สูงอายุ/พัฒนาชุมชน (ไฟล์ Word)</h4>
+              <p data-i18n="co_d1_desc">ตัวอย่างวัตถุประสงค์, ผลที่คาดว่าจะได้รับ และกำหนดการ นำไปแก้ไขใส่ชื่อหน่วยงาน อบต./เทศบาล ยื่นอนุมัติงบได้ทันที</p>
+              <span style="font-size: 0.75rem; color: var(--color-primary); font-weight: 600;">📁 ชื่อไฟล์: Template_Project_StudyTour_KhunYai2_2026.docx (.DOCX | 45 KB)</span>
             </div>
-            <a href="#" class="btn btn-secondary" onclick="alert('ระบบกำลังจัดเตรียมไฟล์ดาวน์โหลด หรือติดต่อแอดมินทาง LINE OA เพื่อรับไฟล์ต้นฉบับ')" data-i18n="co_btn_dl">ดาวน์โหลด</a>
+            <a href="assets/docs/Template_Project_StudyTour_KhunYai2_2026.docx" download class="btn btn-secondary" onclick="trackLineClick('dl_doc_project_template')" data-i18n="co_btn_dl">ดาวน์โหลด .DOCX</a>
           </div>
+
+          <!-- Item 2: SMCE Registration Certificate (PDF) -->
           <div class="download-item">
             <div class="download-info">
-              <h4 data-i18n="co_d2_title">หนังสือรับรองจดทะเบียนวิสาหกิจชุมชน (SMCE)</h4>
-              <p data-i18n="co_d2_desc">สำเนาทะเบียน 12 หลักอย่างเป็นทางการสำหรับการแนบใบเบิกเงินหลวง</p>
+              <h4 data-i18n="co_d2_title">📜 2. หนังสือรับรองการจดทะเบียนวิสาหกิจชุมชน (SMCE ทบ.6)</h4>
+              <p data-i18n="co_d2_desc">สำเนาใบทะเบียนวิสาหกิจชุมชน 12 หลักอย่างเป็นทางการ สำหรับแนบฎีกาจัดซื้อจัดจ้างเบิกเงินหลวง</p>
+              <span style="font-size: 0.75rem; color: var(--color-primary); font-weight: 600;">📁 ชื่อไฟล์: Certificate_SMCE_Klongnamkhem_Tanjai.pdf (.PDF | 350 KB)</span>
             </div>
-            <a href="#" class="btn btn-secondary" onclick="alert('ระบบกำลังจัดเตรียมไฟล์ดาวน์โหลด หรือติดต่อแอดมินทาง LINE OA เพื่อรับไฟล์ต้นฉบับ')" data-i18n="co_btn_dl">ดาวน์โหลด</a>
+            <a href="assets/docs/Certificate_SMCE_Klongnamkhem_Tanjai.pdf" download class="btn btn-secondary" onclick="trackLineClick('dl_doc_smce')" data-i18n="co_btn_dl">ดาวน์โหลด .PDF</a>
           </div>
+
+          <!-- Item 3: FDA & OTOP 5-Star Awards (PDF) -->
           <div class="download-item">
             <div class="download-info">
-              <h4 data-i18n="co_d3_title">หลักฐานมาตรฐาน อย. และ OTOP 5 ดาว</h4>
-              <p data-i18n="co_d3_desc">ภาพประกอบเอกสารสิทธิ์ความเชื่อมั่นประกอบการจ้างเหมาพัสดุ</p>
+              <h4 data-i18n="co_d3_title">🏆 3. ใบรับรองมาตรฐาน อย. ควอลิตี้ อวอร์ด & OTOP 5 ดาว</h4>
+              <p data-i18n="co_d3_desc">สำเนาใบรับรองมาตรฐานความปลอดภัยอาหารและรางวัลการันตีความน่าเชื่อถือระดับประเทศ</p>
+              <span style="font-size: 0.75rem; color: var(--color-primary); font-weight: 600;">📁 ชื่อไฟล์: Certificate_FDA_QualityAward_OTOP5Star.pdf (.PDF | 620 KB)</span>
             </div>
-            <a href="#" class="btn btn-secondary" onclick="alert('ระบบกำลังจัดเตรียมไฟล์ดาวน์โหลด หรือติดต่อแอดมินทาง LINE OA เพื่อรับไฟล์ต้นฉบับ')" data-i18n="co_btn_dl">ดาวน์โหลด</a>
+            <a href="assets/docs/Certificate_FDA_QualityAward_OTOP5Star.pdf" download class="btn btn-secondary" onclick="trackLineClick('dl_doc_fda')" data-i18n="co_btn_dl">ดาวน์โหลด .PDF</a>
+          </div>
+
+          <!-- Item 4: Price Quotation & Rate Card (PDF) -->
+          <div class="download-item">
+            <div class="download-info">
+              <h4 data-i18n="co_d4_title">💰 4. ใบเสนอราคาตัวอย่าง & อัตราค่าบริการศึกษาดูงาน</h4>
+              <p data-i18n="co_d4_desc">ตารางค่าบริการ 250 - 280 บาท/ท่าน แยกหมวดอาหาร วิทยากร และตัวอย่างใบเสร็จรวมบิลเดียว</p>
+              <span style="font-size: 0.75rem; color: var(--color-primary); font-weight: 600;">📁 ชื่อไฟล์: Quotation_RateCard_StudyTour_KhunYai2.pdf (.PDF | 280 KB)</span>
+            </div>
+            <a href="assets/docs/Quotation_RateCard_StudyTour_KhunYai2.pdf" download class="btn btn-secondary" onclick="trackLineClick('dl_doc_quotation')" data-i18n="co_btn_dl">ดาวน์โหลด .PDF</a>
+          </div>
+
+          <!-- Item 5: Bus Route Guide (PDF) -->
+          <div class="download-item">
+            <div class="download-info">
+              <h4 data-i18n="co_d5_title">🚌 5. คู่มือเส้นทางรถบัส</h4>
+              <p data-i18n="co_d5_desc">แผนที่จุดจอดรถบัส พิกัด GPS ลานกลับรถ และข้อมูลมาตรฐานทางลาด Ramps & Rails ผู้สูงอายุ</p>
+              <span style="font-size: 0.75rem; color: var(--color-primary); font-weight: 600;">📁 ชื่อไฟล์: Guide_BusRoute_Accessibility_KhunYai2.pdf (.PDF | 410 KB)</span>
+            </div>
+            <a href="assets/docs/Guide_BusRoute_Accessibility_KhunYai2.pdf" download class="btn btn-secondary" onclick="trackLineClick('dl_doc_bus_guide')" data-i18n="co_btn_dl">ดาวน์โหลด .PDF</a>
           </div>
         </div>
       </div>
@@ -151,14 +188,14 @@
     <div class="rd-callout" style="margin-top: 3rem; background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 2rem; text-align: center; box-shadow: 0 4px 12px var(--shadow-color);">
       <h3 style="font-size: 1.3rem; font-weight: 700; color: var(--color-primary); margin-bottom: 0.5rem;">ต้องการขอหนังสือเชิญ/ใบเสนอราคาล่วงหน้า?</h3>
       <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.25rem;">ฝ่ายประสานงาน B2G พร้อมออกเอกสารและแบบตอบรับโครงการเสนอฝ่ายพัสดุและผู้บริหารทาง LINE OA</p>
-      <a href="https://lin.ee/rGebh2c" target="_blank" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px;" data-i18n="nav_cta">💬 ขอเอกสาร B2G ผ่าน LINE OA</a>
+      <a href="https://lin.ee/rGebh2c?utm_source=website&utm_medium=button&utm_campaign=b2g_docs" target="_blank" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px;" onclick="trackLineClick('b2g_docs')" data-i18n="nav_cta">💬 ขอเอกสาร B2G ผ่าน LINE OA</a>
     </div>
   </main>
 
   <!-- FOOTER -->
   <footer>
     <div class="wrap">
-      <p data-i18n="footer_text">© วิสาหกิจชุมชนกลุ่มคลองน้ำเค็มทันใจ จ.จันทบุรี — พัฒนาสำหรับระบบ B2G และผู้จัดโครงการศึกษาดูงาน</p>
+      <p data-i18n="footer_text">© วิสาหกิจชุมชนกลุ่มคลองน้ำเค็มทันใจ จ.จันทบุรี</p>
       <div class="footer-counter">
         <span data-i18n="footer_visit_count">ผู้เข้าชมสะสมในระบบ:</span> <strong id="visitorCounterVal">0</strong>
       </div>
@@ -166,7 +203,7 @@
   </footer>
 
   <!-- FLOATING LINE BUTTON -->
-  <a href="https://lin.ee/rGebh2c" target="_blank" class="float-line-btn">
+  <a href="https://lin.ee/rGebh2c?utm_source=website&utm_medium=button&utm_campaign=floating_line" target="_blank" class="float-line-btn" onclick="trackLineClick('floating_line')">
     <span>💬</span> <span data-i18n="nav_cta">สอบถามผ่าน LINE</span>
   </a>
 

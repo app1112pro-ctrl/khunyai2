@@ -1617,3 +1617,11 @@ body.dark-theme .update-time-text {
   background-color: var(--bg-soft);
   border-color: var(--border-color);
 }
+
+/* FOOTER LOGO PERFECTLY CENTERED & OPTIMAL MEDIUM SIZE (135px) */
+.footer-logo {
+  max-width: 135px !important;
+  height: auto;
+  margin: 0 auto 12px auto !important;
+  display: block !important;
+}

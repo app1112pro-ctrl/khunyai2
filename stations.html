@@ -9,6 +9,15 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="assets/logo-icon.png">
   
+  <!-- Google Analytics 4 (GA4) Tracking & Measurement -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2ZFVSF5CFQ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-2ZFVSF5CFQ', { 'send_page_view': true });
+  </script>
+  
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,7 +44,7 @@
           <li><a href="index.html#homeTab" data-i18n="nav_home">หน้าแรก</a></li>
           <li><a href="stations.html" class="active" data-i18n="nav_stations">ฐานเรียนรู้</a></li>
           <li><a href="index.html#packagesTab" data-i18n="nav_packages">หลักสูตร & แพ็กเกจ</a></li>
-          <li><a href="index.html#foodTab" data-i18n="nav_food">เมนูอาหารสุขภาพ</a></li>
+          <li><a href="food.html" data-i18n="nav_food">เมนูอาหาร</a></li>
           <li><a href="coordinator.html" data-i18n="nav_coordinator">สำหรับผู้จัดโครงการ</a></li>
           <li><a href="index.html#aboutTab" data-i18n="nav_about">เกี่ยวกับเรา</a></li>
           <li><a href="index.html#contactTab" data-i18n="nav_contact">ติดต่อเรา</a></li>
@@ -142,14 +151,14 @@
     <!-- R&D CONSULTATION CALLOUT -->
     <div class="rd-callout" style="margin-top: 3rem; background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 2rem; text-align: center; box-shadow: 0 4px 12px var(--shadow-color);">
       <p style="font-size: 1.1rem; font-weight: 600; color: var(--color-primary); margin-bottom: 1rem;" data-i18n="rd_note">ทางวิสาหกิจชุมชนยินดีให้คำปรึกษาการตั้งแบรนด์/ขอมาตรฐาน อย. สำหรับผู้ประกอบการท้องถิ่น</p>
-      <a href="https://lin.ee/rGebh2c" target="_blank" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px;" data-i18n="rd_btn">💬 ศึกษาดูงาน / ปรึกษาข้อมูลผ่าน LINE</a>
+      <a href="https://lin.ee/rGebh2c?utm_source=website&utm_medium=button&utm_campaign=stations_info" target="_blank" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px;" onclick="trackLineClick('stations_info')" data-i18n="rd_btn">💬 ศึกษาดูงาน / ปรึกษาข้อมูลผ่าน LINE</a>
     </div>
   </main>
 
   <!-- FOOTER -->
   <footer>
     <div class="wrap">
-      <p data-i18n="footer_text">© วิสาหกิจชุมชนกลุ่มคลองน้ำเค็มทันใจ จ.จันทบุรี — พัฒนาสำหรับระบบ B2G และผู้จัดโครงการศึกษาดูงาน</p>
+      <p data-i18n="footer_text">© วิสาหกิจชุมชนกลุ่มคลองน้ำเค็มทันใจ จ.จันทบุรี</p>
       <div class="footer-counter">
         <span data-i18n="footer_visit_count">ผู้เข้าชมสะสมในระบบ:</span> <strong id="visitorCounterVal">0</strong>
       </div>
@@ -157,7 +166,7 @@
   </footer>
 
   <!-- FLOATING LINE BUTTON -->
-  <a href="https://lin.ee/rGebh2c" target="_blank" class="float-line-btn">
+  <a href="https://lin.ee/rGebh2c?utm_source=website&utm_medium=button&utm_campaign=floating_line" target="_blank" class="float-line-btn" onclick="trackLineClick('floating_line')">
     <span>💬</span> <span data-i18n="nav_cta">สอบถามผ่าน LINE</span>
   </a>
 

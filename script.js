@@ -1,6 +1,19 @@
 /* script.js - การควบคุมเว็บไซต์ วิสาหกิจชุมชนคลองน้ำเค็มทันใจ */
 
 // ==========================================
+// 0. ระบบสถิติ Google Analytics 4 (GA4 Event Tracking)
+// ==========================================
+function trackLineClick(campaignName) {
+  if (typeof gtag === 'function') {
+    gtag('event', 'click_line_oa', {
+      'event_category': 'Engagement',
+      'event_label': campaignName || 'general_line_click',
+      'value': 1
+    });
+  }
+}
+
+// ==========================================
 // 1. ระบบพจนานุกรม 3 ภาษา (TH, EN, ZH)
 // ==========================================
 const translations = {
@@ -11,7 +24,8 @@ const translations = {
     nav_home: "หน้าแรก",
     nav_stations: "ฐานเรียนรู้",
     nav_packages: "หลักสูตร & แพ็กเกจ",
-    nav_food: "เมนูอาหารสุขภาพ",
+    nav_food: "เมนูอาหาร",
+    nav_products: "รายการสินค้า",
     nav_coordinator: "สำหรับผู้จัดโครงการ",
     nav_about: "เกี่ยวกับเรา",
     nav_contact: "ติดต่อเรา",
@@ -128,6 +142,7 @@ const translations = {
     food_tab_buffet: "บุฟเฟต์สำหรับคณะ",
     food_tab_alacarte: "เซ็ตอาหารพิเศษ",
     food_tab_dessert: "ของหวานและเครื่องดื่ม",
+    food_tab_products: "รายการสินค้าแปรรูป",
     food_price_ask: "สอบถามรายละเอียดราคาทาง LINE",
     
     // Coordinator Section
@@ -166,9 +181,9 @@ const translations = {
     contact_address_lbl: "สถานที่ตั้งหลัก",
     contact_address_val: "บ้านบางเคียน เลขที่ 53/2 หมู่ 2 ต.คลองน้ำเค็ม อ.แหลมสิงห์ จ.จันทบุรี 22190",
     contact_phone_lbl: "เบอร์โทรศัพท์ติดต่อตรง",
-    contact_phone_val: "08-1863-2637 (ประธานวัลลี ใจเย็น / คุณนิด)",
+    contact_phone_val: "081-136-3325 (คุณพชร ใจเย็น) / 081-863-2637 (คุณแม่วัลลี)",
     contact_email_lbl: "อีเมลสำหรับส่งจดหมายราชการ",
-    contact_email_val: "bebennnn@gmail.com",
+    contact_email_val: "Khlongnamkhem532@gmail.com",
     contact_qr_lbl: "สแกน QR Code เพื่อแชทบน LINE",
     contact_qr_sub: "แอดไลน์ประสานงานด่วน",
     
@@ -188,7 +203,7 @@ const translations = {
     nearby_verify_pending: "รอเจ้าหน้าที่ตรวจสอบพิกัดจริง",
     
     // Footer
-    footer_text: "© วิสาหกิจชุมชนกลุ่มคลองน้ำเค็มทันใจ จ.จันทบุรี — พัฒนาสำหรับระบบประสานงาน B2G และผู้จัดโครงการศึกษาดูงาน",
+    footer_text: "© วิสาหกิจชุมชนกลุ่มคลองน้ำเค็มทันใจ จ.จันทบุรี",
     footer_visit_count: "ผู้เข้าชมสะสมในระบบ:"
   },
   en: {
@@ -1001,13 +1016,17 @@ function renderCalendarFromQueue(queueRows) {
   
   calGrid.innerHTML = '';
   
-  // แสดงผลในเดือน สิงหาคม 2569 (วันแรกของเดือนคือวันพฤหัสบดี = เริ่มช่องที่ 4)
-  const startDayOffset = 4; // พฤหัสบดี
-  const totalDays = 31; // สิงหาคม
+  // คำนวณวันแรกของเดือนและจำนวนวันแบบไดนามิก (ค่าเริ่มต้น: เดือนสิงหาคม ปี 2026 / พ.ศ. 2569)
+  const targetYear = 2026;
+  const targetMonth = 7; // สิงหาคม (0 = ม.ค., 7 = ส.ค.)
   
-  // สร้างแถวหัววันจันทร์-อาทิตย์
+  // วันแรกของเดือน (0 = อาทิตย์, 1 = จันทร์, ..., 6 = เสาร์)
+  const startDayOffset = new Date(targetYear, targetMonth, 1).getDay();
+  // จำนวนวันทั้งหมดในเดือนนั้น
+  const totalDays = new Date(targetYear, targetMonth + 1, 0).getDate();
+  
+  // สร้างแถวหัววัน (อาทิตย์ - เสาร์)
   const dayNames = ["อา", "จ", "อ", "พ", "พฤ", "ศ", "ส"];
-  // สำหรับการแปล
   const dayNamesEn = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const dayNamesZh = ["日", "一", "二", "三", "四", "五", "六"];
   
@@ -1023,7 +1042,7 @@ function renderCalendarFromQueue(queueRows) {
     calGrid.appendChild(div);
   });
   
-  // ช่องเปล่าก่อนเริ่มวันแรก
+  // ช่องเปล่าก่อนเริ่มวันแรกของเดือน
   for (let i = 0; i < startDayOffset; i++) {
     const div = document.createElement('div');
     div.className = 'cal-cell empty';
@@ -1035,22 +1054,36 @@ function renderCalendarFromQueue(queueRows) {
   let countFull = 0;
   let countHoliday = 0;
 
-  // สร้างตารางวัน 1 - 31
+  // สร้างตารางวัน 1 ถึง totalDays
   for (let day = 1; day <= totalDays; day++) {
     const div = document.createElement('div');
     div.className = 'cal-cell';
     div.textContent = day;
     
-    // ตรวจสอบสถานะวันตามตารางข้อมูลคิวงาน
-    const dateString = `${day} ส.ค.`;
-    const dateStringFull = `${day < 10 ? '0' + day : day} ส.ค.`;
+    // ตรวจสอบสถานะวันตามตารางข้อมูลคิวงานจาก Google Sheets
+    const dStr = String(day);
+    const dPad = day < 10 ? '0' + day : String(day);
     
     let dayStatus = ""; // default
     
     queueRows.forEach((row, index) => {
       if (index === 0 && (row[0] === 'วันที่' || row[0] === 'Date')) return;
-      const rowDate = row[0] || "";
-      if (rowDate.includes(dateString) || rowDate.includes(dateStringFull)) {
+      const rowDate = (row[0] || "").trim();
+      if (!rowDate) return;
+      
+      // แมตช์รูปแบบวันที่หลากหลาย: "1 ส.ค.", "01 ส.ค.", "1 สิงหาคม", "1/8", "01/08", "2026-08-01"
+      const matchesDate = 
+        rowDate.includes(`${dStr} ส.ค.`) ||
+        rowDate.includes(`${dPad} ส.ค.`) ||
+        rowDate.includes(`${dStr} สิงหาคม`) ||
+        rowDate.includes(`${dPad} สิงหาคม`) ||
+        rowDate.includes(`${dPad}/08/`) ||
+        rowDate.includes(`${dStr}/8/`) ||
+        rowDate.includes(`-08-${dPad}`) ||
+        rowDate.startsWith(`${dStr} `) ||
+        rowDate.startsWith(`${dPad} `);
+        
+      if (matchesDate) {
         const stat = row[4] ? row[4].trim() : "";
         if (stat.includes("เต็ม") || stat.toLowerCase() === "full") {
           dayStatus = "full";
@@ -1220,9 +1253,19 @@ function changeLightboxImg(dir) {
 }
 
 function initGallery() {
-  // มอบหมายฟังก์ชันการคลิกให้กับการ์ดอาหารและผลิตภัณฑ์
+  // สวิตช์การคัดกรองหมวดหมู่อาหารและสินค้า (Food & Product Filter Tabs)
+  const filterBtns = document.querySelectorAll('.food-tab-btn');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const filter = btn.getAttribute('data-filter') || 'all';
+      filterGallery(filter);
+    });
+  });
+
+  // มอบหมายฟังก์ชันการคลิกเปิดรูปขยายให้กับการ์ดอาหารและผลิตภัณฑ์
   const cards = document.querySelectorAll('.food-card');
-  cards.forEach((card, index) => {
+  cards.forEach((card) => {
     card.addEventListener('click', (e) => {
       e.preventDefault();
       // ดึงลำดับของคาร์ดปัจจุบันที่กำลังแสดงอยู่
