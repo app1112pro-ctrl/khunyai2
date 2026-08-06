@@ -1250,15 +1250,24 @@ function filterGallery(category) {
 }
 
 function openLightbox(index) {
-  const activeCards = Array.from(document.querySelectorAll('.food-card')).filter(card => card.style.display !== 'none');
+  const activeCards = Array.from(document.querySelectorAll('.food-card')).filter(card => {
+    return card.style.display !== 'none' && getComputedStyle(card).display !== 'none';
+  });
+  
+  if (activeCards.length === 0) return;
+  
   galleryImages = activeCards.map(card => {
+    const imgEl = card.querySelector('img');
+    const h4El = card.querySelector('h4');
+    // ดึงค่าภาพจริงที่เบราว์เซอร์แสดงผล (currentSrc || src)
+    const activeSrc = imgEl ? (imgEl.currentSrc || imgEl.src || imgEl.getAttribute('src') || '') : '';
     return {
-      src: card.querySelector('img').getAttribute('src'),
-      alt: card.querySelector('h4').textContent
+      src: activeSrc,
+      alt: h4El ? h4El.textContent : (imgEl ? (imgEl.getAttribute('alt') || '') : '')
     };
   });
   
-  currentLightboxIndex = index;
+  currentLightboxIndex = (index >= 0 && index < galleryImages.length) ? index : 0;
   updateLightbox();
   
   const lightbox = document.getElementById('lightboxPopup');
@@ -1279,8 +1288,21 @@ function closeLightbox() {
 function updateLightbox() {
   const img = document.getElementById('lightboxImg');
   if (img && galleryImages[currentLightboxIndex]) {
-    img.setAttribute('src', galleryImages[currentLightboxIndex].src);
-    img.setAttribute('alt', galleryImages[currentLightboxIndex].alt);
+    const targetSrc = galleryImages[currentLightboxIndex].src;
+    img.src = targetSrc;
+    img.alt = galleryImages[currentLightboxIndex].alt;
+    img.triedFallback = false;
+    
+    img.onerror = function() {
+      if (!this.triedFallback) {
+        this.triedFallback = true;
+        if (targetSrc.includes('.jpg')) {
+          this.src = targetSrc.replace('.jpg', '.png');
+        } else if (targetSrc.includes('.png')) {
+          this.src = targetSrc.replace('.png', '.jpg');
+        }
+      }
+    };
   }
 }
 
@@ -1308,10 +1330,12 @@ function initGallery() {
   // มอบหมายฟังก์ชันการคลิกเปิดรูปขยายให้กับการ์ดอาหารและผลิตภัณฑ์
   const cards = document.querySelectorAll('.food-card');
   cards.forEach((card) => {
+    card.style.cursor = 'pointer';
     card.addEventListener('click', (e) => {
-      e.preventDefault();
-      // ดึงลำดับของคาร์ดปัจจุบันที่กำลังแสดงอยู่
-      const activeCards = Array.from(document.querySelectorAll('.food-card')).filter(c => c.style.display !== 'none');
+      e.stopPropagation();
+      const activeCards = Array.from(document.querySelectorAll('.food-card')).filter(c => {
+        return c.style.display !== 'none' && getComputedStyle(c).display !== 'none';
+      });
       const activeIndex = activeCards.indexOf(card);
       openLightbox(activeIndex >= 0 ? activeIndex : 0);
     });
@@ -1327,11 +1351,11 @@ function initGallery() {
   const nextBtn = document.querySelector('.lightbox-next');
   if (nextBtn) nextBtn.addEventListener('click', () => changeLightboxImg(1));
 
-  // ปิดเมื่อคลิกนอกรูป
+  // ปิดเมื่อคลิกนอกรูป หรือคลิกที่พื้นหลังดำ
   const lightbox = document.getElementById('lightboxPopup');
   if (lightbox) {
     lightbox.addEventListener('click', (e) => {
-      if (e.target === lightbox) {
+      if (e.target === lightbox || e.target.classList.contains('lightbox-close')) {
         closeLightbox();
       }
     });
