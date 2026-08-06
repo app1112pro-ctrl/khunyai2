@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เมนูอาหาร & รายการสินค้า — คุณยาย² คลองน้ำเค็มทันใจ จ.จันทบุรี</title>
+  <meta name="description" content="เมนูอาหารบุฟเฟต์สำหรับคณะศึกษาดูงาน เซ็ตอาหารพิเศษ ก๋วยเตี๋ยวรสมือจันท์ และรายการสินค้าแปรรูป วิสาหกิจชุมชนคลองน้ำเค็มทันใจ จันทบุรี">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/logo-icon.png">
+  
+  <!-- Google Analytics 4 (GA4) Tracking & Measurement -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2ZFVSF5CFQ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-2ZFVSF5CFQ', { 'send_page_view': true });
+  </script>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Prompt:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- CSS Link -->
+  <link rel="stylesheet" href="style.css">
+  
+  <style>
+    /* Styling specifically for Pure Image Product Cards inside food.html */
+    .food-card[data-category="product"] .food-img-wrap {
+      aspect-ratio: 1 / 1 !important;
+      position: relative;
+    }
+    
+    .food-card[data-category="product"] .food-info {
+      display: none !important; /* Hide text body for Processed Product subset */
+    }
+    
+    .food-card[data-category="product"] {
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .food-card[data-category="product"]:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px var(--shadow-hover);
+    }
+    
+    .product-pure-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(0, 0, 0, 0.65);
+      color: #FFFFFF;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      backdrop-filter: blur(4px);
+      z-index: 2;
+    }
+    
+    .product-pure-zoom {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: var(--color-primary);
+      color: #FFFFFF;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      z-index: 2;
+      opacity: 0.85;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    
+    .food-card[data-category="product"]:hover .product-pure-zoom {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <nav class="wrap">
+      <!-- ROW 1: Logo & Nav Links -->
+      <div class="nav-row-main">
+        <div class="logo">
+          <img src="assets/logo-icon.png" alt="คุณยาย² KHUNYAI²" class="logo-img">
+          <div>
+            <span data-i18n="logo_title">วิสาหกิจชุมชนกลุ่มคลองน้ำเค็มทันใจ</span>
+          </div>
+        </div>
+        
+        <ul class="nav-links" id="navLinks">
+          <li><a href="index.html#homeTab" data-i18n="nav_home">หน้าแรก</a></li>
+          <li><a href="stations.html" data-i18n="nav_stations">ฐานเรียนรู้</a></li>
+          <li><a href="index.html#packagesTab" data-i18n="nav_packages">หลักสูตร & แพ็กเกจ</a></li>
+          <li><a href="food.html" class="active" data-i18n="nav_food">เมนูอาหาร</a></li>
+          <li><a href="coordinator.html" data-i18n="nav_coordinator">สำหรับผู้จัดโครงการ</a></li>
+          <li><a href="index.html#aboutTab" data-i18n="nav_about">เกี่ยวกับเรา</a></li>
+          <li><a href="index.html#contactTab" data-i18n="nav_contact">ติดต่อเรา</a></li>
+          <li><a href="schedule.html" data-i18n="queue_eyebrow">ตารางคิวงาน</a></li>
+          <li><a href="nearby.html" data-i18n="nav_nearby">แผนที่ใกล้เคียง</a></li>
+        </ul>
+        
+        <!-- Hamburger Menu for Mobile -->
+        <button class="menu-toggle" id="menuToggle" aria-label="เปิดเมนูนำทาง">☰</button>
+      </div>
+      
+      <!-- ROW 2: Utilities (Right-aligned on Desktop) -->
+      <div class="nav-row-sub">
+        <div class="utility-btns">
+          <!-- Dark Mode Button -->
+          <button class="ut-btn" id="themeToggleBtn" onclick="toggleTheme()" title="สลับโหมด มืด-สว่าง">🌙</button>
+          
+          <!-- Font Size Controls (A- / A / A+) -->
+          <button class="ut-btn" id="fontMinusBtn" title="ลดขนาดอักษร" style="font-size: 0.75rem;">A-</button>
+          <button class="ut-btn" id="fontResetBtn" title="ขนาดอักษรปกติ" style="font-size: 0.9rem;">A</button>
+          <button class="ut-btn" id="fontPlusBtn" title="เพิ่มขนาดอักษร" style="font-size: 1.1rem;">A+</button>
+          
+          <!-- Language Selector -->
+          <div class="lang-selector">
+            <button class="lang-btn active" data-lang="th" onclick="setLanguage('th')">TH</button>
+            <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">EN</button>
+            <button class="lang-btn" data-lang="zh" onclick="setLanguage('zh')">中</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- PAGE HERO BANNER -->
+  <section class="sec" style="background: linear-gradient(135deg, var(--bg-soft), var(--bg-surface)); border-bottom: 1px solid var(--border-color); padding: 3rem 0 2rem 0;">
+    <div class="wrap">
+      <div class="sec-head" style="margin-bottom: 0;">
+        <span class="eyebrow" data-i18n="food_eyebrow">แบรนด์คุณยาย² (KHUNYAI²)</span>
+        <h1 style="font-size: 2.2rem; font-weight: 800; color: var(--color-primary); margin-bottom: 0.5rem;" data-i18n="food_title">เมนูอาหารและรายการสินค้าแปรรูป "รสมือจันท์ by คุณยายกำลังสอง"</h1>
+        <p style="color: var(--text-muted); font-size: 1rem; max-width: 800px; margin: 0 auto;">โภชนาการท้องถิ่นสร้างสรรค์ ออกแบบเพื่อคณะดูงานผู้สูงอายุ สะอาด ได้มาตรฐาน อย. ควอลิตี้ อวอร์ด และ OTOP 5 ดาว</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN FOOD & PRODUCTS CONTENT -->
+  <main class="wrap" style="padding-top: 2.5rem; padding-bottom: 4rem;">
+    
+    <!-- CATEGORY FILTER TABS -->
+    <div class="food-tabs-container" style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 2rem;">
+      <button class="food-tab-btn active" data-filter="all" data-i18n="food_tab_all">ทั้งหมด</button>
+      <button class="food-tab-btn" data-filter="buffet" data-i18n="food_tab_buffet">บุฟเฟต์สำหรับคณะ</button>
+      <button class="food-tab-btn" data-filter="alacarte" data-i18n="food_tab_alacarte">เซ็ตอาหารพิเศษ</button>
+      <button class="food-tab-btn" data-filter="dessert" data-i18n="food_tab_dessert">ของหวานและเครื่องดื่ม</button>
+      <button class="food-tab-btn" data-filter="product" data-i18n="food_tab_products">🛍️ รายการสินค้าแปรรูป</button>
+    </div>
+
+    <!-- FOOD & PRODUCTS GALLERY GRID -->
+    <div class="food-grid">
+      
+      <!-- Food 1: Buffet set 1 -->
+      <div class="food-card" data-category="buffet">
+        <div class="food-img-wrap">
+          <img src="assets/buffet-set1.jpg" alt="Buffet ชุดที่ 1 - รสมือจันท์">
+        </div>
+        <div class="food-info">
+          <span class="cat" data-i18n="food_tab_buffet">บุฟเฟต์สำหรับคณะ</span>
+          <h4>Buffet ชุดที่ 1 (ก๋วยเตี๋ยวหมูเลียง & ผัดไทซอสมังคุด)</h4>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;">เสิร์ฟพร้อมน้ำพริกกุ้งเสียบทุเรียนทอด และน้ำมะปี๊ดน้ำผึ้ง</p>
+          <p data-i18n="food_price_ask">สอบถามรายละเอียดราคาทาง LINE</p>
+        </div>
+      </div>
+
+      <!-- Food 2: Buffet set 2 -->
+      <div class="food-card" data-category="buffet">
+        <div class="food-img-wrap">
+          <img src="assets/buffet-set2.jpg" alt="Buffet ชุดที่ 2 - รสมือจันท์">
+        </div>
+        <div class="food-info">
+          <span class="cat" data-i18n="food_tab_buffet">บุฟเฟต์สำหรับคณะ</span>
+          <h4>Buffet ชุดที่ 2 (เส้นจันท์ผัดปูกะตอย & ถั่วลายเสือต้มหมู)</h4>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;">เสิร์ฟพร้อมน้ำพริกปูกะตอย, ชามังคุด และแกงสมุนไพรพื้นบ้าน</p>
+          <p data-i18n="food_price_ask">สอบถามรายละเอียดราคาทาง LINE</p>
+        </div>
+      </div>
+
+      <!-- Food 3: Buffet set 3 -->
+      <div class="food-card" data-category="buffet">
+        <div class="food-img-wrap">
+          <img src="assets/buffet-set3.jpg" alt="Buffet ชุดที่ 3 - รสมือจันท์">
+        </div>
+        <div class="food-info">
+          <span class="cat" data-i18n="food_tab_buffet">บุฟเฟต์สำหรับคณะ</span>
+          <h4>Buffet ชุดที่ 3 (ผัดไทมะยงชิด/ส้มโอ & ข้าวต้มคู่รัก)</h4>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;">ข้าวต้มมัดไส้ทุเรียน & ไส้มังคุด พร้อมไอติมส้มโอสด</p>
+          <p data-i18n="food_price_ask">สอบถามรายละเอียดราคาทาง LINE</p>
+        </div>
+      </div>
+
+      <!-- Food 4: A la carte 1 -->
+      <div class="food-card" data-category="alacarte">
+        <div class="food-img-wrap">
+          <img src="assets/alacarte-1.jpg" alt="เซ็ตเส้นจันท์ผัดปูม้า">
+        </div>
+        <div class="food-info">
+          <span class="cat" data-i18n="food_tab_alacarte">เซ็ตอาหารพิเศษ</span>
+          <h4>เซ็ตเส้นจันท์ผัดปูม้า & ต้มสรวงสวรรค์</h4>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;">เมนูซิกเนเจอร์ต้นตำรับจันทบุรี ปรุงสดร้อนๆ</p>
+          <p data-i18n="food_price_ask">สอบถามรายละเอียดราคาทาง LINE</p>
+        </div>
+      </div>
+
+      <!-- Food 5: A la carte 2 -->
+      <div class="food-card" data-category="alacarte">
+        <div class="food-img-wrap">
+          <img src="assets/alacarte-2.jpg" alt="เซ็ตผัดไทซอสมังคุด">
+        </div>
+        <div class="food-info">
+          <span class="cat" data-i18n="food_tab_alacarte">เซ็ตอาหารพิเศษ</span>
+          <h4>เซ็ตผัดไทซอสมังคุด & ก๋วยเตี๋ยวผัดคนจน</h4>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;">นวัตกรรมซอสผลไม้รสเปรี้ยวหวานกลมกล่อม</p>
+          <p data-i18n="food_price_ask">สอบถามรายละเอียดราคาทาง LINE</p>
+        </div>
+      </div>
+
+      <!-- Food 6: Dessert & Snacks -->
+      <div class="food-card" data-category="dessert">
+        <div class="food-img-wrap">
+          <img src="assets/dessert.jpg" alt="ขนม & เบเกอรี่แปรรูปผลไม้">
+        </div>
+        <div class="food-info">
+          <span class="cat" data-i18n="food_tab_dessert">ของหวานและเครื่องดื่ม</span>
+          <h4>ขนมแปรรูป (ทุเรียนหนึบ, ชีสมังคุด & พริกไทยหวาน)</h4>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;">ท๊อฟฟี่กระวาน, ทุเรียนเบญจรส, น้ำมะปี๊ดน้ำผึ้ง & ชามังคุด</p>
+          <p data-i18n="food_price_ask">สอบถามรายละเอียดราคาทาง LINE</p>
+        </div>
+      </div>
+
+      <!-- SUBSET: PROCESSED PRODUCTS (PURE IMAGE CARDS - 1:1 SQUARE - NO TEXT BODY) -->
+
+      <!-- Product P_1 -->
+      <div class="food-card" data-category="product">
+        <div class="food-img-wrap">
+          <img src="assets/products/P_1.jpg" onerror="if(!this.triedPng){this.triedPng=true;this.src='assets/products/P_1.png';}else{this.src='assets/buffet-set1.jpg';}" alt="น้ำพริกกุ้งเสียบทุเรียนทอด P_1">
+          <span class="product-pure-badge">P_1</span>
+          <span class="product-pure-zoom">🔍</span>
+        </div>
+        <div class="food-info">
+          <!-- Text body hidden via CSS for product category -->
+        </div>
+      </div>
+
+      <!-- Product P_2 -->
+      <div class="food-card" data-category="product">
+        <div class="food-img-wrap">
+          <img src="assets/products/P_2.jpg" onerror="if(!this.triedPng){this.triedPng=true;this.src='assets/products/P_2.png';}else{this.src='assets/buffet-set2.jpg';}" alt="ทุเรียนหนึบคุณยาย² P_2">
+          <span class="product-pure-badge">P_2</span>
+          <span class="product-pure-zoom">🔍</span>
+        </div>
+        <div class="food-info"></div>
+      </div>
+
+      <!-- Product P_3 -->
+      <div class="food-card" data-category="product">
+        <div class="food-img-wrap">
+          <img src="assets/products/P_3.jpg" onerror="if(!this.triedPng){this.triedPng=true;this.src='assets/products/P_3.png';}else{this.src='assets/buffet-set3.jpg';}" alt="พริกไทยหวาน P_3">
+          <span class="product-pure-badge">P_3</span>
+          <span class="product-pure-zoom">🔍</span>
+        </div>
+        <div class="food-info"></div>
+      </div>
+
+      <!-- Product P_4 -->
+      <div class="food-card" data-category="product">
+        <div class="food-img-wrap">
+          <img src="assets/products/P_4.jpg" onerror="if(!this.triedPng){this.triedPng=true;this.src='assets/products/P_4.png';}else{this.src='assets/alacarte-1.jpg';}" alt="ซอสมังคุดปรุงรส P_4">
+          <span class="product-pure-badge">P_4</span>
+          <span class="product-pure-zoom">🔍</span>
+        </div>
+        <div class="food-info"></div>
+      </div>
+
+      <!-- Product P_5 -->
+      <div class="food-card" data-category="product">
+        <div class="food-img-wrap">
+          <img src="assets/products/P_5.jpg" onerror="if(!this.triedPng){this.triedPng=true;this.src='assets/products/P_5.png';}else{this.src='assets/alacarte-2.jpg';}" alt="ท๊อฟฟี่กระวาน P_5">
+          <span class="product-pure-badge">P_5</span>
+          <span class="product-pure-zoom">🔍</span>
+        </div>
+        <div class="food-info"></div>
+      </div>
+
+      <!-- Product P_6 -->
+      <div class="food-card" data-category="product">
+        <div class="food-img-wrap">
+          <img src="assets/products/P_6.jpg" onerror="if(!this.triedPng){this.triedPng=true;this.src='assets/products/P_6.png';}else{this.src='assets/dessert.jpg';}" alt="น้ำมะปี๊ดอบน้ำผึ้ง P_6">
+          <span class="product-pure-badge">P_6</span>
+          <span class="product-pure-zoom">🔍</span>
+        </div>
+        <div class="food-info"></div>
+      </div>
+
+    </div>
+
+    <!-- CALLOUT CTA -->
+    <div class="rd-callout" style="margin-top: 3rem; background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 2.5rem; text-align: center; box-shadow: 0 4px 12px var(--shadow-color);">
+      <h3 style="font-size: 1.4rem; font-weight: 700; color: var(--color-primary); margin-bottom: 0.5rem;">สนใจสั่งจองเมนูอาหารสำหรับคณะ หรือสั่งซื้อสินค้าแปรรูป</h3>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">วิสาหกิจชุมชนยินดีบริการจัดอาหารบุฟเฟต์ตามงบประมาณ และบริการส่งสินค้าแปรรูปทั่วประเทศ</p>
+      <a href="https://lin.ee/rGebh2c?utm_source=website&utm_medium=button&utm_campaign=food_inquiry" target="_blank" class="btn btn-primary" onclick="trackLineClick('food_page_booking')" style="font-size: 1.05rem; padding: 0.8rem 2rem;">
+        💬 จองเมนูอาหาร / สอบถามทาง LINE OA
+      </a>
+    </div>
+
+  </main>
+
+  <!-- LIGHTBOX POPUP MODAL FOR FULL IMAGE ZOOM -->
+  <div class="lightbox-popup" id="lightboxPopup">
+    <div class="lightbox-content">
+      <button class="lightbox-close" aria-label="ปิดรูปภาพ">×</button>
+      <button class="lightbox-btn lightbox-prev" aria-label="รูปก่อนหน้า">‹</button>
+      <img id="lightboxImg" src="" alt="ภาพขยายเมนูอาหาร/สินค้า">
+      <button class="lightbox-btn lightbox-next" aria-label="รูปถัดไป">›</button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap footer-content">
+      <div class="footer-brand">
+        <img src="assets/logo-primary.png" alt="คุณยาย² KHUNYAI²" class="footer-logo">
+        <p data-i18n="footer_brand_desc">ต้นแบบวิสาหกิจชุมชน & ศูนย์การเรียนรู้สุขภาวะผู้สูงอายุ จ.จันทบุรี</p>
+        
+        <!-- Counter Badge -->
+        <div style="margin-top: 15px; font-size: 0.82rem; color: var(--text-muted); background: rgba(0,0,0,0.05); padding: 6px 12px; border-radius: 20px; display: inline-block;">
+          👁️ <span data-i18n="visitor_counter_prefix">ผู้เข้าชมสะสมในระบบ:</span> <strong id="visitorCounterVal" style="color: var(--color-primary);">0</strong> <span data-i18n="visitor_counter_suffix">ครั้ง</span>
+        </div>
+      </div>
+      
+      <div class="footer-links">
+        <h4 data-i18n="footer_quick_links">ลิงก์ด่วน</h4>
+        <ul>
+          <li><a href="index.html#homeTab" data-i18n="nav_home">หน้าแรก</a></li>
+          <li><a href="stations.html" data-i18n="nav_stations">ฐานเรียนรู้</a></li>
+          <li><a href="food.html" data-i18n="nav_food">เมนูอาหาร</a></li>
+          <li><a href="coordinator.html" data-i18n="nav_coordinator">สำหรับผู้จัดโครงการ</a></li>
+          <li><a href="schedule.html" data-i18n="queue_eyebrow">ตารางคิวงาน</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-contact">
+        <h4 data-i18n="footer_contact_title">การติดต่อ</h4>
+        <p data-i18n="footer_addr">วิสาหกิจชุมชนกลุ่มคลองน้ำเค็มทันใจ อ.แหลมสิงห์ จ.จันทบุรี</p>
+        <div style="margin-top: 10px;">
+          <a href="https://lin.ee/rGebh2c?utm_source=website&utm_medium=button&utm_campaign=footer_line_oa" target="_blank" class="btn btn-primary" onclick="trackLineClick('footer_line_oa')" style="background-color: #06C755; border-color: #06C755; font-size: 0.85rem; padding: 6px 16px; border-radius: 20px;">
+            💬 ติดต่อทาง LINE OA
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div class="wrap">
+        <p data-i18n="footer_copy">© 2026 คุณยาย² (KHUNYAI²) — วิสาหกิจชุมชนกลุ่มคลองน้ำเค็มทันใจ. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Javascript -->
+  <script src="script.js"></script>
+</body>
+</html>
