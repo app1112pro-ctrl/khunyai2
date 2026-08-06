@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ฐานเรียนรู้ & เวิร์กชอป — คุณยาย² คลองน้ำเค็มทันใจ จ.จันทบุรี</title>
+  <meta name="description" content="ฐานสาธิตและลงมือปฏิบัติจริง 6 ฐานการเรียนรู้ แปรรูปผลไม้ นวัตกรรม BCG และก๋วยเตี๋ยวรสมือจันท์ วิสาหกิจชุมชนคลองน้ำเค็มทันใจ จันทบุรี">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/logo-icon.png">
+  
+  <!-- Google Analytics 4 (GA4) Tracking & Measurement -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2ZFVSF5CFQ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-2ZFVSF5CFQ', { 'send_page_view': true });
+  </script>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Prompt:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- CSS Link -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <nav class="wrap">
+      <!-- ROW 1: Logo & Nav Links -->
+      <div class="nav-row-main">
+        <div class="logo">
+          <img src="assets/logo-icon.png" alt="คุณยาย² KHUNYAI²" class="logo-img">
+          <div>
+            <span data-i18n="logo_title">วิสาหกิจชุมชนกลุ่มคลองน้ำเค็มทันใจ</span>
+          </div>
+        </div>
+        
+        <ul class="nav-links" id="navLinks">
+          <li><a href="index.html#homeTab" data-i18n="nav_home">หน้าแรก</a></li>
+          <li><a href="stations.html" class="active" data-i18n="nav_stations">ฐานเรียนรู้</a></li>
+          <li><a href="index.html#packagesTab" data-i18n="nav_packages">หลักสูตร & แพ็กเกจ</a></li>
+          <li><a href="food.html" data-i18n="nav_food">เมนูอาหาร</a></li>
+          <li><a href="coordinator.html" data-i18n="nav_coordinator">สำหรับผู้จัดโครงการ</a></li>
+          <li><a href="index.html#aboutTab" data-i18n="nav_about">เกี่ยวกับเรา</a></li>
+          <li><a href="index.html#contactTab" data-i18n="nav_contact">ติดต่อเรา</a></li>
+          <li><a href="schedule.html" data-i18n="queue_eyebrow">ตารางคิวงาน</a></li>
+          <li><a href="nearby.html" data-i18n="nav_nearby">แผนที่ใกล้เคียง</a></li>
+        </ul>
+        
+        <!-- Hamburger Menu for Mobile -->
+        <button class="menu-toggle" id="menuToggle" aria-label="เปิดเมนูนำทาง">☰</button>
+      </div>
+      
+      <!-- ROW 2: Utilities (Right-aligned on Desktop) -->
+      <div class="nav-row-sub">
+        <div class="utility-btns">
+          <!-- Dark Mode Button -->
+          <button class="ut-btn" id="themeToggleBtn" onclick="toggleTheme()" title="สลับโหมด มืด-สว่าง">🌙</button>
+          
+          <!-- Font Size Controls (A- / A / A+) -->
+          <button class="ut-btn" id="fontMinusBtn" title="ลดขนาดอักษร" style="font-size: 0.75rem;">A-</button>
+          <button class="ut-btn" id="fontResetBtn" title="ขนาดอักษรปกติ" style="font-size: 0.9rem;">A</button>
+          <button class="ut-btn" id="fontPlusBtn" title="เพิ่มขนาดอักษร" style="font-size: 1.1rem;">A+</button>
+          
+          <!-- Language Selector -->
+          <div class="lang-selector">
+            <button class="lang-btn active" data-lang="th" onclick="setLanguage('th')">TH</button>
+            <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">EN</button>
+            <button class="lang-btn" data-lang="zh" onclick="setLanguage('zh')">中</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- PAGE HERO BANNER -->
+  <section class="sec" style="background: linear-gradient(135deg, var(--bg-soft), var(--bg-surface)); border-bottom: 1px solid var(--border-color); padding: 3rem 0 2rem 0;">
+    <div class="wrap">
+      <div class="sec-head" style="margin-bottom: 0;">
+        <span class="eyebrow" data-i18n="stations_eyebrow">ฐานกิจกรรมเรียนรู้</span>
+        <h1 style="font-size: 2.2rem; font-weight: 800; color: var(--color-primary); margin-bottom: 0.5rem;" data-i18n="stations_title">ฐานสาธิตและลงมือปฏิบัติจริง</h1>
+        <p style="color: var(--text-muted); font-size: 1rem; max-width: 800px; margin: 0 auto;" data-i18n="stations_desc">เรียนรู้ร่วมกันกับปราชญ์ชาวบ้านและสมาชิกชุมชน ผ่าน 6 ฐานการเรียนรู้และเวิร์กชอปที่ออกแบบให้เหมาะสมกับทุกช่วงวัย</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN STATIONS CONTENT -->
+  <main class="wrap" style="padding-top: 2.5rem; padding-bottom: 4rem;">
+    <div class="stations-grid">
+      <!-- Station 1: น้ำพริก & ซอสผลไม้ -->
+      <div class="station-card">
+        <h3 data-i18n="st_title_1">ฐานน้ำพริกแปรรูป & ซอสผลไม้</h3>
+        <ul>
+          <li data-i18n="st_desc_1_1">น้ำพริกกุ้งเสียบทุเรียนทอด & น้ำพริกปูกะตอย</li>
+          <li data-i18n="st_desc_1_2">การสาธิตทำซอสมังคุดปรุงอาหาร</li>
+          <li data-i18n="st_desc_1_3">น้ำพริกสมุนไพรพื้นบ้านตามฤดูกาล</li>
+        </ul>
+      </div>
+      <!-- Station 2: ก๋วยเตี๋ยวรสมือจันท์ -->
+      <div class="station-card">
+        <h3 data-i18n="st_title_2">ฐานก๋วยเตี๋ยวรสมือจันท์</h3>
+        <ul>
+          <li data-i18n="st_desc_2_1">เส้นจันท์ผัดปูกะตอย/ปูม้า (สูตรต้นตำรับ)</li>
+          <li data-i18n="st_desc_2_2">ผัดไทซอสมังคุด (นวัตกรรมซอสผลไม้)</li>
+          <li data-i18n="st_desc_2_3">ก๋วยเตี๋ยวหมูเลียง & ก๋วยเตี๋ยวผัดคนจน</li>
+        </ul>
+      </div>
+      <!-- Station 3: เบเกอรี่ & แปรรูปผลไม้ -->
+      <div class="station-card">
+        <h3 data-i18n="st_title_3">ฐานเบเกอรี่ & แปรรูปผลไม้</h3>
+        <ul>
+          <li data-i18n="st_desc_3_1">ทุเรียนหนึบ, ทุเรียนหิมะ, ทุเรียนเบญจรส & แครกเกอร์ทุเรียน</li>
+          <li data-i18n="st_desc_3_2">ชีสมังคุด, ขนมมังคุดนึ่ง & ข้าวต้มคู่รัก (ไส้ทุเรียน/มังคุด)</li>
+          <li data-i18n="st_desc_3_3">ลูกกอง (ลองกองอบแห้งทำไส้ขนม) & ข้าวหน้ามะม่วง</li>
+        </ul>
+      </div>
+      <!-- Station 4: สมุนไพร & เครื่องดื่มสุขภาพ -->
+      <div class="station-card">
+        <h3 data-i18n="st_title_4">ฐานสมุนไพร & เครื่องดื่มสุขภาพ</h3>
+        <ul>
+          <li data-i18n="st_desc_4_1">พริกไทยหวานลดน้ำหนัก (พริกไทยอ่อนแช่อิ่มอบแห้ง)</li>
+          <li data-i18n="st_desc_4_2">ท๊อฟฟี่กระวานสมุนไพรไทย</li>
+          <li data-i18n="st_desc_4_3">น้ำมะปี๊ดน้ำผึ้งป้องกันหวัด, ชามังคุด & มะปี๊ดอบน้ำผึ้ง</li>
+        </ul>
+      </div>
+      <!-- Station 5: นวัตกรรมรักษ์โลก BCG & IoT -->
+      <div class="station-card">
+        <h3 data-i18n="st_title_5">ฐานนวัตกรรมรักษ์โลก (BCG & IoT)</h3>
+        <ul>
+          <li data-i18n="st_desc_5_1">การจัดการขยะชีวภาพและขยะชุมชนครบวงจร</li>
+          <li data-i18n="st_desc_5_2">การทำปุ๋ยอินทรีย์คุณภาพสูงจากวัตถุดิบแปรรูป</li>
+          <li data-i18n="st_desc_5_3">ระบบโรงอบแห้งแสงอาทิตย์อัจฉริยะระบบอัตโนมัติ (IoT)</li>
+        </ul>
+      </div>
+      <!-- Station 6: ศูนย์ R&D พัฒนาสูตรอาหาร -->
+      <div class="station-card">
+        <h3 data-i18n="st_title_6">ศูนย์ R&D พัฒนาสูตรอาหาร</h3>
+        <ul>
+          <li data-i18n="st_desc_6_1">บริการรับสร้างสรรค์แปรรูปผลไม้ทางการเกษตรเป็นเมนูใหม่</li>
+          <li data-i18n="st_desc_6_2">การทำแยมส้มโอ, ผัดไทมะยงชิด/ส้มโอ & ไอติมส้มโอ</li>
+          <li data-i18n="st_desc_6_3">ขนมพื้นบ้านจันท์ (ขนมควยลิง & โอเคไส้หม่อน)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- R&D CONSULTATION CALLOUT -->
+    <div class="rd-callout" style="margin-top: 3rem; background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 2rem; text-align: center; box-shadow: 0 4px 12px var(--shadow-color);">
+      <p style="font-size: 1.1rem; font-weight: 600; color: var(--color-primary); margin-bottom: 1rem;" data-i18n="rd_note">ทางวิสาหกิจชุมชนยินดีให้คำปรึกษาการตั้งแบรนด์/ขอมาตรฐาน อย. สำหรับผู้ประกอบการท้องถิ่น</p>
+      <a href="https://lin.ee/rGebh2c?utm_source=website&utm_medium=button&utm_campaign=stations_info" target="_blank" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px;" onclick="trackLineClick('stations_info')" data-i18n="rd_btn">💬 ศึกษาดูงาน / ปรึกษาข้อมูลผ่าน LINE</a>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap">
+      <p data-i18n="footer_text">© วิสาหกิจชุมชนกลุ่มคลองน้ำเค็มทันใจ จ.จันทบุรี</p>
+      <div class="footer-counter">
+        <span data-i18n="footer_visit_count">ผู้เข้าชมสะสมในระบบ:</span> <strong id="visitorCounterVal">0</strong>
+      </div>
+    </div>
+  </footer>
+
+  <!-- FLOATING LINE BUTTON -->
+  <a href="https://lin.ee/rGebh2c?utm_source=website&utm_medium=button&utm_campaign=floating_line" target="_blank" class="float-line-btn" onclick="trackLineClick('floating_line')">
+    <span>💬</span> <span data-i18n="nav_cta">สอบถามผ่าน LINE</span>
+  </a>
+
+  <!-- JavaScript Link -->
+  <script src="script.js"></script>
+
+</body>
+</html>
